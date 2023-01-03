@@ -1,0 +1,4 @@
+pyaudio
+requests
+openai
+pydub
