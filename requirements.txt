@@ -2,3 +2,5 @@ pyaudio
 requests
 openai
 pydub
+google-api-python-client
+google-cloud-texttospeech

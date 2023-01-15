@@ -12,7 +12,7 @@ import requests
 
 from gpt_client import GPTClient
 
-Threshold = 100
+Threshold = 200
 
 SHORT_NORMALIZE = (1.0/32768.0)
 chunk = 1024
@@ -24,7 +24,7 @@ swidth = 2
 TIMEOUT_LENGTH = 2
 
 f_name_directory = r'recordings'
-duplex_backend_url = "{}/transcribe".format("https://stretch-mediawiki-thousands-clubs.trycloudflare.com")
+duplex_backend_url = "{}/transcribe".format("https://cruises-strings-gig-exams.trycloudflare.com")
 
 gpt_client = GPTClient('restaurant')
 
