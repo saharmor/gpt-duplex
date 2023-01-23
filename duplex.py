@@ -24,7 +24,7 @@ swidth = 2
 TIMEOUT_LENGTH = 2
 
 f_name_directory = r'recordings'
-duplex_backend_url = "{}/transcribe".format("https://cruises-strings-gig-exams.trycloudflare.com")
+duplex_backend_url = "{}/transcribe".format("https://episode-pay-rx-seven.trycloudflare.com")
 
 gpt_client = GPTClient('restaurant')
 
@@ -70,14 +70,27 @@ class Recorder:
         print('Finished recording, sending to processing')
 
         n_files = len(os.listdir(f_name_directory))
-        # output_filename = os.path.join(f_name_directory, '{}.wav'.format(34))
         output_filename = os.path.join(f_name_directory, '{}.wav'.format(n_files))
         self.write(b''.join(rec), output_filename)
+
+        start = time.time()
         restaurant_reply = send_recording(output_filename).text
+        end = time.time()
+        print('--> Transcription execution time {}'.format(end - start))
         print('--> Restaurant transcription [{}]'.format(restaurant_reply))
+
+        start = time.time()
         bot_reply = gpt_client.get_bot_reply(restaurant_reply)
+        end = time.time()
+        print('--> GPT execution time {}'.format(end - start))
         print('--> GPT generated reply [{}]'.format(bot_reply))
-        tts(bot_reply)
+        
+        start = time.time()
+        audio_reply = tts(bot_reply)
+        end = time.time()
+        print('--> TTS execution time {}'.format(end - start))
+
+        play_mp3(audio_reply)
 
     def write(self, recording, output_filename):
         wf = wave.open(output_filename, 'wb')
@@ -117,14 +130,12 @@ def tts(text: str):
         input=synthesis_input, voice=voice, audio_config=audio_config
     )
 
-    play_mp3(response.audio_content)
+    return response.audio_content
 
 
 def play_mp3(audio_bytes):
     voiced_text = AudioSegment.from_file(io.BytesIO(audio_bytes), format="mp3")
     play(voiced_text)
-
-
 
 a = Recorder()
 

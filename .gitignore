@@ -131,3 +131,5 @@ dmypy.json
 recordings/
 .DS_Store
 temp.py
+duplex.py
+output.wav
