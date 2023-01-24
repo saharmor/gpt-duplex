@@ -6,13 +6,12 @@ import wave
 import time
 import os
 from google.cloud import texttospeech
-from pydub import AudioSegment
-from pydub.playback import play
+from playsound import playsound
 import requests
 
 from gpt_client import GPTClient
 
-Threshold = 200
+Threshold = 80
 
 SHORT_NORMALIZE = (1.0/32768.0)
 chunk = 1024
@@ -24,7 +23,7 @@ swidth = 2
 TIMEOUT_LENGTH = 2
 
 f_name_directory = r'recordings'
-duplex_backend_url = "{}/transcribe".format("https://episode-pay-rx-seven.trycloudflare.com")
+duplex_backend_url = "{}/transcribe".format("https://candles-bc-deserve-infectious.trycloudflare.com")
 
 gpt_client = GPTClient('restaurant')
 
@@ -101,7 +100,7 @@ class Recorder:
         wf.close()
 
     def listen(self):
-        print('Listening beginning')
+        print('Listening begins')
         while True:
             input = self.stream.read(chunk, exception_on_overflow=False)
             rms_val = self.rms(input)
@@ -124,7 +123,7 @@ def tts(text: str):
     )
 
     audio_config = texttospeech.AudioConfig(
-        audio_encoding=texttospeech.AudioEncoding.MP3, speaking_rate=1.2
+        audio_encoding=texttospeech.AudioEncoding.LINEAR16, speaking_rate=1.2
     )
     response = client.synthesize_speech(
         input=synthesis_input, voice=voice, audio_config=audio_config
@@ -134,8 +133,8 @@ def tts(text: str):
 
 
 def play_mp3(audio_bytes):
-    voiced_text = AudioSegment.from_file(io.BytesIO(audio_bytes), format="mp3")
-    play(voiced_text)
+    open('tts_audio.wav', 'wb').write(audio_bytes)
+    playsound('tts_audio.wav')
 
 a = Recorder()
 
