@@ -75,21 +75,21 @@ class Recorder:
         start = time.time()
         restaurant_reply = send_recording(output_filename).text
         end = time.time()
-        print('--> Transcription execution time {}'.format(end - start))
+        print('--> Transcription execution time {}'.format(round(end - start, 2)))
         print('--> Restaurant transcription [{}]'.format(restaurant_reply))
 
         start = time.time()
         bot_reply = gpt_client.get_bot_reply(restaurant_reply)
         end = time.time()
-        print('--> GPT execution time {}'.format(end - start))
+        print('--> GPT execution time {}'.format(round(end - start, 2)))
         print('--> GPT generated reply [{}]'.format(bot_reply))
         
         start = time.time()
         audio_reply = tts(bot_reply)
         end = time.time()
-        print('--> TTS execution time {}'.format(end - start))
+        print('--> TTS execution time {}'.format(round(end - start, 2)))
 
-        play_mp3(audio_reply)
+        play_wav(audio_reply)
 
     def write(self, recording, output_filename):
         wf = wave.open(output_filename, 'wb')
@@ -132,7 +132,7 @@ def tts(text: str):
     return response.audio_content
 
 
-def play_mp3(audio_bytes):
+def play_wav(audio_bytes):
     open('tts_audio.wav', 'wb').write(audio_bytes)
     playsound('tts_audio.wav')
 
