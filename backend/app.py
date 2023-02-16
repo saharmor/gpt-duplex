@@ -43,7 +43,7 @@ def health_check():
 
 
 with app.app_context():
-  whisper_model = whisper.load_model("small.en")
+  whisper_model = whisper.load_model("medium.en")
 
 
 if __name__ == "__main__":
